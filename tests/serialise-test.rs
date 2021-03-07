@@ -1,6 +1,5 @@
 use logmover_remote::types::api_types::{LogMoveRequest,MoveItem};
 
-#[test]
 fn main()
 {
     let testrequest:LogMoveRequest=LogMoveRequest {
