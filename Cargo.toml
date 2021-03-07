@@ -25,3 +25,4 @@ colored="2.0.0"
 rocket="0.4.7"
 http="0.2.3"
 reqwest={version="0.11.1",features=["blocking","json"]}
+serde={version="1.0.124",features=["derive"]}
