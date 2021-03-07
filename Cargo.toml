@@ -13,7 +13,7 @@ path="server.rs"
 
 [[bin]]
 name="logmove-client"
-path="logmove-client.rs"
+path="logmove-client/logmove-client.rs"
 
 [[bin]]
 name="relocate-test"
