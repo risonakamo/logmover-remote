@@ -744,6 +744,7 @@ dependencies = [
  "rocket_contrib",
  "serde",
  "serde_json",
+ "tokio",
 ]
 
 [[package]]
@@ -1467,6 +1468,18 @@ dependencies = [
  "mio 0.7.9",
  "num_cpus",
  "pin-project-lite",
+ "tokio-macros",
+]
+
+[[package]]
+name = "tokio-macros"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "caf7b11a536f46a809a8a9f0bb4237020f70ecbf115b842360afb127ea2fda57"
+dependencies = [
+ "proc-macro2 1.0.24",
+ "quote 1.0.9",
+ "syn 1.0.62",
 ]
 
 [[package]]
