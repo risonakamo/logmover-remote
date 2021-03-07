@@ -12,6 +12,10 @@ name="logmover-remote"
 path="server.rs"
 
 [[bin]]
+name="logmove-client"
+path="logmove-client.rs"
+
+[[bin]]
 name="relocate-test"
 path="tests/relocation-test.rs"
 
@@ -20,3 +24,4 @@ chrono="0.4"
 colored="2.0.0"
 rocket="0.4.7"
 http="0.2.3"
+reqwest={version="0.11.1",features=["blocking","json"]}
