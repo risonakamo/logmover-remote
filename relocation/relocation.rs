@@ -2,20 +2,33 @@ use std::{
     fs::rename,
     path::{Path,PathBuf}
 };
-
 use colored::Colorize;
 
-pub fn relocate(targetFolder:&str,destFolder:&str,filename:&str)->Option<()>
+/// relocate target file given target folder and destination folder. returns
+/// bool on success.
+pub fn relocate(targetFolder:&str,destFolder:&str,filename:&str)->bool
 {
     let target:PathBuf=Path::new(targetFolder).join(filename);
     let dest:PathBuf=Path::new(destFolder).join(filename);
 
-    let targetStr:String=String::from(target.to_str()?);
+    let triedTargetStr:Option<&str>=target.to_str();
+    let targetStr:String;
+
+    match triedTargetStr
+    {
+        None=>{
+            panic!("path string conversion error");
+        }
+
+        Some(x)=>{
+            targetStr=String::from(x);
+        }
+    }
 
     match rename(target,dest)
     {
         Ok(())=>{
-
+            println!("moved {}",targetStr.yellow());
         }
 
         Err(err)=>{
@@ -23,8 +36,9 @@ pub fn relocate(targetFolder:&str,destFolder:&str,filename:&str)->Option<()>
                 "could not locate target".red(),
                 targetStr.yellow()
             );
+            return false;
         }
     }
 
-    return Some(());
+    return true;
 }
