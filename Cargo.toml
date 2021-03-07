@@ -9,7 +9,7 @@ path="lib.rs"
 
 [[bin]]
 name="logmover-remote"
-path="main.rs"
+path="server.rs"
 
 [[bin]]
 name="relocate-test"
@@ -18,3 +18,5 @@ path="tests/relocation-test.rs"
 [dependencies]
 chrono="0.4"
 colored="2.0.0"
+rocket="0.4.7"
+http="0.2.3"
