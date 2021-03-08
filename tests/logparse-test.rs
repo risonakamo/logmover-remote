@@ -1,6 +1,7 @@
-use logmover_remote::log_parse::tests::logparsetest;
+use logmover_remote::log_parse::tests::{logparsetest,logparsetest2};
 
 fn main()
 {
-    logparsetest();
+    // logparsetest();
+    logparsetest2();
 }

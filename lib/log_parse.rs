@@ -1,13 +1,29 @@
 use regex::{Regex,Captures};
 use std::error::Error;
 use lazy_static::lazy_static;
+use clipboard_win::get_clipboard_string;
+use colored::Colorize;
 
 use super::types::api_types::MoveItem;
 
-// fn parseFromClipboard()->Result<Vec<MoveItem>,String>
-// {
+/// attempt to pull log entries from the clipboard and return the Move Items
+/// from them.
+fn parseFromClipboard()->Result<Vec<MoveItem>,Box<dyn Error>>
+{
+    let clipText:String=get_clipboard_string()
+        .unwrap()
+        .trim()
+        .to_string();
 
-// }
+    let splitText=clipText.split("\n")
+    .map(|x:&str|->String {
+        return x.trim().to_string();
+    });
+
+    return Ok(splitText.map(|x:String|->MoveItem {
+        return parseLogLine(x).unwrap();
+    }).collect());
+}
 
 /// parse a log entry line into a move item object.
 fn parseLogLine(line:String)->Result<MoveItem,Box<dyn Error>>
@@ -19,13 +35,17 @@ fn parseLogLine(line:String)->Result<MoveItem,Box<dyn Error>>
 
     // [1]: the date string
     // [2]: the item filename
-    let caps:Captures=reg.captures(&line).unwrap();
+    let caps:Captures=match reg.captures(&line) {
+        Some(res)=>res,
+
+        None=>{
+            return parseLogLineParseErrorPrint(line);
+        }
+    };
 
     if caps.len()!=3
     {
-        eprintln!("failed log parse for entry:");
-        eprintln!("{}",line);
-        return Err("failed parse error")?;
+        return parseLogLineParseErrorPrint(line);
     }
 
     return Ok(MoveItem {
@@ -34,9 +54,17 @@ fn parseLogLine(line:String)->Result<MoveItem,Box<dyn Error>>
     });
 }
 
+/// print error for parse log line
+fn parseLogLineParseErrorPrint<T>(line:String)->Result<T,Box<dyn Error>>
+{
+    eprintln!("{}","failed log parse for entry:".red());
+    eprintln!("{}",line.yellow());
+    return Err("failed parse error")?;
+}
+
 pub mod tests
 {
-    use super::parseLogLine;
+    use super::{parseLogLine,parseFromClipboard};
     use super::super::types::api_types::MoveItem;
 
     pub fn logparsetest()
@@ -58,5 +86,10 @@ pub mod tests
         }).collect();
 
         println!("{:#?}",moveitems);
+    }
+
+    pub fn logparsetest2()
+    {
+        println!("{:#?}",parseFromClipboard().unwrap());
     }
 }
