@@ -41,13 +41,22 @@ pub mod tests
 
     pub fn logparsetest()
     {
-        let testentry:String=concat!(
-            "2021-03-07 01:41:59 [Erai-raws] Azur Lane - Bisoku Zenshin! - ",
-            "08 [1080p][Multiple Subtitle].mkv"
-        ).to_string();
+        let testentries:Vec<String>=vec![
+            concat!(
+                "2021-03-07 01:41:59 [Erai-raws] Azur Lane - Bisoku Zenshin! - ",
+                "08 [1080p][Multiple Subtitle].mkv"
+            ).to_string(),
+            concat!(
+                "2021-03-07 01:27:36 [Erai-raws] World Witches Hasshin Shimasu! - ",
+                "07 [1080p][Multiple Subtitle].mkv"
+            ).to_string()
+        ];
 
-        let moveitem:MoveItem=parseLogLine(testentry).unwrap();
+        let moveitems:Vec<MoveItem>=testentries.into_iter()
+        .map(|x:String|->MoveItem {
+            return parseLogLine(x).unwrap();
+        }).collect();
 
-        println!("{:?}",moveitem);
+        println!("{:#?}",moveitems);
     }
 }
