@@ -35,3 +35,7 @@ path="tests/relocation-test.rs"
 [[bin]]
 name="clipboardtest"
 path="tests/clipboard-test.rs"
+
+[[bin]]
+name="logparsetest"
+path="tests/logparse-test.rs"
