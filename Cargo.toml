@@ -27,6 +27,7 @@ serde_json="1.0.64"
 tokio={version="1.2.0",features=["macros"]}
 clipboard-win="4.0.3"
 regex="1.4.3"
+lazy_static="1.4.0"
 
 # TESTING
 [[bin]]

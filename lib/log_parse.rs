@@ -1,5 +1,6 @@
 use regex::{Regex,Captures};
 use std::error::Error;
+use lazy_static::lazy_static;
 
 use super::types::api_types::MoveItem;
 
@@ -11,7 +12,10 @@ use super::types::api_types::MoveItem;
 /// parse a log entry line into a move item object.
 fn parseLogLine(line:String)->Result<MoveItem,Box<dyn Error>>
 {
-    let reg:Regex=Regex::new(r"(\d+-\d+-\d+ \d+:\d+:\d+) (.*+)").unwrap();
+    lazy_static!
+    {
+        static ref reg:Regex=Regex::new(r"(\d+-\d+-\d+ \d+:\d+:\d+) (.*+)").unwrap();
+    }
 
     // [1]: the date string
     // [2]: the item filename
@@ -33,6 +37,7 @@ fn parseLogLine(line:String)->Result<MoveItem,Box<dyn Error>>
 pub mod tests
 {
     use super::parseLogLine;
+    use super::super::types::api_types::MoveItem;
 
     pub fn logparsetest()
     {
@@ -41,6 +46,8 @@ pub mod tests
             "08 [1080p][Multiple Subtitle].mkv"
         ).to_string();
 
-        parseLogLine(testentry).unwrap();
+        let moveitem:MoveItem=parseLogLine(testentry).unwrap();
+
+        println!("{:?}",moveitem);
     }
 }

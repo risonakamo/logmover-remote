@@ -770,6 +770,7 @@ dependencies = [
  "clipboard-win",
  "colored",
  "http",
+ "lazy_static",
  "regex",
  "reqwest",
  "rocket",
