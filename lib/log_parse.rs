@@ -20,9 +20,13 @@ fn parseFromClipboard()->Result<Vec<MoveItem>,Box<dyn Error>>
         return x.trim().to_string();
     });
 
-    return Ok(splitText.map(|x:String|->MoveItem {
+    let results:Vec<MoveItem>=splitText.map(|x:String|->MoveItem {
         return parseLogLine(x).unwrap();
-    }).collect());
+    }).collect();
+
+    printLogLineParseResult(results.len(),clipText);
+
+    return Ok(results);
 }
 
 /// parse a log entry line into a move item object.
@@ -60,6 +64,14 @@ fn parseLogLineParseErrorPrint<T>(line:String)->Result<T,Box<dyn Error>>
     eprintln!("{}","failed log parse for entry:".red());
     eprintln!("{}",line.yellow());
     return Err("failed parse error")?;
+}
+
+/// given number of move items created and the text to generate them, prints
+/// parse log results
+fn printLogLineParseResult(items:usize,parsedText:String)
+{
+    println!("sending move request for {} items from text:",items.to_string().green());
+    println!("{}",parsedText.yellow());
 }
 
 pub mod tests
