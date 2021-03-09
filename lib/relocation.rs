@@ -32,10 +32,8 @@ pub fn relocate(targetFolder:&str,destFolder:&str,filename:&str)->bool
         }
 
         Err(err)=>{
-            println!("{} {}",
-                "could not locate target".red(),
-                targetStr.yellow()
-            );
+            println!("{}","could not locate target:".red());
+            println!("{}",targetStr.yellow());
             return false;
         }
     }
