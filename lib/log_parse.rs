@@ -8,7 +8,7 @@ use super::types::api_types::MoveItem;
 
 /// attempt to pull log entries from the clipboard and return the Move Items
 /// from them.
-fn parseFromClipboard()->Result<Vec<MoveItem>,Box<dyn Error>>
+pub fn parseFromClipboard()->Result<Vec<MoveItem>,Box<dyn Error>>
 {
     let clipText:String=get_clipboard_string()
         .unwrap()

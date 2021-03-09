@@ -30,14 +30,14 @@ regex="1.4.3"
 lazy_static="1.4.0"
 
 # TESTING
-[[bin]]
-name="relocatetest"
-path="tests/relocation-test.rs"
+# [[bin]]
+# name="relocatetest"
+# path="tests/relocation-test.rs"
 
-[[bin]]
-name="clipboardtest"
-path="tests/clipboard-test.rs"
+# [[bin]]
+# name="clipboardtest"
+# path="tests/clipboard-test.rs"
 
-[[bin]]
-name="logparsetest"
-path="tests/logparse-test.rs"
+# [[bin]]
+# name="logparsetest"
+# path="tests/logparse-test.rs"
