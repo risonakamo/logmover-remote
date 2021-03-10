@@ -55,8 +55,9 @@ pub mod tests
         let result=relocationExistence(
             r"C:\Users\ktkm\Desktop\logmover-remote\testzone\vids",
             &vec![
-                "2021-03-07 01:27:36 [Erai-raws] World Witches Hasshin Shimasu! - 07 [1080p][Multiple Subtitle].mkv",
-                "2021-03-06 02:07:55 [Erai-raws] Show by Rock!! Stars!! - 07 [v0][1080p].mkv"
+                "[Erai-raws] World Witches Hasshin Shimasu! - 07 [1080p][Multiple Subtitle].mkv",
+                // "[Erai-raws] Show by Rock!! Stars!! - 07 [v0][1080p].mkv",
+                "[Erai-raws] Azur Lane - Bisoku Zenshin! - 08 [1080p][Multiple Subtitle].mkv"
             ]
         );
 
