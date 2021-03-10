@@ -7,7 +7,7 @@ use colored::Colorize;
 
 use logmover_remote::{
     types::api_types::{LogMoveRequest},
-    relocation::relocate
+    relocation::{relocateMultiple}
 };
 
 #[post("/log-move",format="json",data="<request>")]
@@ -17,21 +17,6 @@ fn logMove(request:Json<LogMoveRequest>)->&'static str
 
     println!("relocation request for {} items",
         logrequest.items.len().to_string().yellow());
-
-    for x in logrequest.items
-    {
-        let relocationResult:bool=relocate(
-            r"C:\Users\ktkm\Desktop\logmover-remote\testzone\vids",
-            r"C:\Users\ktkm\Desktop\logmover-remote\testzone\delete",
-            &x.name
-        );
-
-        if !relocationResult
-        {
-            println!("{}","relocation aborted.".red());
-            break;
-        }
-    }
 
     return "hey";
 }
