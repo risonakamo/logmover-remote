@@ -6,8 +6,7 @@ use rocket_contrib::json::{Json};
 use colored::Colorize;
 
 use logmover_remote::{
-    types::api_types::{LogMoveRequest},
-    relocation::{relocateMultiple}
+    types::api_types::{LogMoveRequest}
 };
 
 #[post("/log-move",format="json",data="<request>")]

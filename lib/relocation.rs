@@ -7,7 +7,7 @@ use colored::Colorize;
 use super::types::api_types::MoveItem;
 
 /// perform relocation action for array of move items. return if all of them succeeded
-pub fn relocateMultiple(targetFolder:&str,destFolder:&str,items:&Vec<MoveItem>)->bool
+fn relocateMultiple(targetFolder:&str,destFolder:&str,items:&Vec<MoveItem>)->bool
 {
     if !relocationPrecheck(targetFolder,items)
     {
