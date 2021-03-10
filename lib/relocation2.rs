@@ -1,4 +1,5 @@
-use std::path::Path;
+use std::path::{Path,PathBuf};
+use std::fs::rename;
 use colored::Colorize;
 
 use super::types::relocation_types::{RelocationResult,RelocationItemResult};
@@ -46,9 +47,31 @@ fn relocationExistence(targetDir:&str,items:&Vec<&str>)->RelocationResult
     };
 }
 
+/// relocate a file in the target directory to a destination directory.
+/// return bool on success.
+fn relocate(targetDir:&str,destinationDir:&str,filename:&str)->bool
+{
+    let pathToFile:PathBuf=Path::new(targetDir).join(filename);
+    let pathToDestFile:PathBuf=Path::new(destinationDir).join(filename);
+
+    match rename(&pathToFile,&pathToDestFile)
+    {
+        Ok(())=>{}
+
+        Err(err)=>{
+            eprintln!("{}","error relocating file:".red());
+            eprintln!("{}",pathToFile.to_str().unwrap().yellow());
+            eprintln!("{}",err);
+            return false;
+        }
+    }
+
+    return true;
+}
+
 pub mod tests
 {
-    use super::relocationExistence;
+    use super::{relocationExistence,relocate};
 
     pub fn relocatetest2()
     {
@@ -62,5 +85,16 @@ pub mod tests
         );
 
         println!("{:#?}",result);
+    }
+
+    pub fn relocatetest3()
+    {
+        let result=relocate(
+            r"C:\Users\ktkm\Desktop\logmover-remote\testzone\vids",
+            r"C:\Users\ktkm\Desktop\logmover-remote\testzone\delete",
+            r"[Erai-raws] World Witches Hasshin Shimasu! - 07 [1080p][Multiple Subtitle].mkv"
+        );
+
+        println!("{}",result);
     }
 }
