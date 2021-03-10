@@ -16,7 +16,27 @@ fn relocateMultiple(targetDir:&str,destinationDir:&str,items:&Vec<&str>)->Reloca
         return existenceResult;
     }
 
-    return existenceResult;
+    let mut relocateAllSuccess:bool=true;
+    let relocateResult:Vec<RelocationItemResult>=items.into_iter().map(
+        |x:&&str|->RelocationItemResult {
+            let moveSuccess:bool=relocate(targetDir,destinationDir,x);
+
+            if !moveSuccess
+            {
+                relocateAllSuccess=false;
+            }
+
+            return RelocationItemResult {
+                name:x.to_string(),
+                success:moveSuccess
+            };
+        }
+    ).collect();
+
+    return RelocationResult {
+        allSuccess:relocateAllSuccess,
+        itemResults:relocateResult
+    };
 }
 
 /// given a target dir and array of items, check if each item exists. returns a relocation
@@ -71,7 +91,7 @@ fn relocate(targetDir:&str,destinationDir:&str,filename:&str)->bool
 
 pub mod tests
 {
-    use super::{relocationExistence,relocate};
+    use super::{relocationExistence,relocate,relocateMultiple};
 
     pub fn relocatetest2()
     {
@@ -96,5 +116,20 @@ pub mod tests
         );
 
         println!("{}",result);
+    }
+
+    pub fn relocatetest4()
+    {
+        let result=relocateMultiple(
+            r"C:\Users\ktkm\Desktop\logmover-remote\testzone\vids",
+            r"C:\Users\ktkm\Desktop\logmover-remote\testzone\delete",
+            &vec![
+                "[Erai-raws] World Witches Hasshin Shimasu! - 07 [1080p][Multiple Subtitle].mkv",
+                // "[Erai-raws] Show by Rock!! Stars!! - 07 [v0][1080p].mkv",
+                "[Erai-raws] Azur Lane - Bisoku Zenshin! - 08 [1080p][Multiple Subtitle].mkv"
+            ]
+        );
+
+        println!("{:#?}",result);
     }
 }
