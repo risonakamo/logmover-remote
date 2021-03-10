@@ -5,3 +5,4 @@
 
 pub mod types;
 pub mod log_parse;
+pub mod relocation2;
