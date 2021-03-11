@@ -42,6 +42,6 @@ lazy_static="1.4.0"
 # name="logparsetest"
 # path="tests/logparse-test.rs"
 
-[[bin]]
-name="relocatetest2"
-path="tests/relocation-test2.rs"
+# [[bin]]
+# name="relocatetest2"
+# path="tests/relocation-test2.rs"
