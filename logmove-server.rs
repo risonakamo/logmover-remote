@@ -7,7 +7,7 @@ use colored::Colorize;
 
 use logmover_remote::relocation2::relocateMultiple;
 
-use logmover_remote::types::relocation_types::RelocationResult;
+use logmover_remote::types::relocation_types::{RelocationResult,printRelocationResult};
 use logmover_remote::types::api_types::{LogMoveRequest,MoveItem};
 
 #[post("/log-move",format="json",data="<request>")]
@@ -27,6 +27,8 @@ fn logMove(request:Json<LogMoveRequest>)->&'static str
         r"C:\Users\ktkm\Desktop\logmover-remote\testzone\delete",
         &moveItems
     );
+
+    printRelocationResult(&relocateResult);
 
     return "hey";
 }
