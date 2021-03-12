@@ -1,4 +1,5 @@
 #![allow(non_snake_case)]
+#![allow(unused_variables)]
 
 use reqwest::Client;
 
@@ -11,8 +12,13 @@ use logmover_remote::{
 #[tokio::main]
 async fn main()
 {
+    let items=match parseFromClipboard() {
+        Err(err)=>std::process::exit(0),
+        Ok(res)=>res
+    };
+
     let logmoveRequest:LogMoveRequest=LogMoveRequest {
-        items:parseFromClipboard().unwrap()
+        items
     };
 
     let client=Client::new();

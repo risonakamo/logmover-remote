@@ -20,9 +20,17 @@ pub fn parseFromClipboard()->Result<Vec<MoveItem>,Box<dyn Error>>
         return x.trim().to_string();
     });
 
-    let results:Vec<MoveItem>=splitText.map(|x:String|->MoveItem {
-        return parseLogLine(x).unwrap();
+    let resultsContain:Result<Vec<MoveItem>,Box<dyn Error>>=
+    splitText.map(|x:String|->Result<MoveItem,Box<dyn Error>> {
+        return parseLogLine(x);
     }).collect();
+
+    let results:Vec<MoveItem>;
+    match resultsContain
+    {
+        Err(err)=>return Err(err),
+        Ok(res)=>results=res
+    }
 
     printLogLineParseResult(results.len(),clipText);
 
