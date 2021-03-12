@@ -1,7 +1,8 @@
 use colored::{Colorize,ColoredString};
+use serde::{Serialize,Deserialize};
 
 /// result of a relocation attempt
-#[derive(Debug)]
+#[derive(Debug,Serialize,Deserialize)]
 pub struct RelocationResult
 {
     pub allSuccess:bool, // whether the overall relocation was successful
@@ -9,7 +10,7 @@ pub struct RelocationResult
 }
 
 /// relocation attempt result for a single item
-#[derive(Debug)]
+#[derive(Debug,Serialize,Deserialize)]
 pub struct RelocationItemResult
 {
     pub name:String,
@@ -22,12 +23,12 @@ pub fn printRelocationResult(result:&RelocationResult)
     let passString:ColoredString;
     if result.allSuccess
     {
-        passString="pass".green();
+        passString="completed".green();
     }
 
     else
     {
-        passString="fail".red()
+        passString="aborted".red()
     }
 
     println!("relocating {} items...{}",

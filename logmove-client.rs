@@ -4,6 +4,7 @@ use reqwest::Client;
 
 use logmover_remote::{
     types::api_types::{LogMoveRequest},
+    types::relocation_types::{RelocationResult,printRelocationResult},
     log_parse::parseFromClipboard
 };
 
@@ -24,5 +25,7 @@ async fn main()
         .await
         .unwrap();
 
-    println!("{}",res);
+    let relocationResult:RelocationResult=serde_json::from_str(&res).unwrap();
+
+    printRelocationResult(&relocationResult);
 }

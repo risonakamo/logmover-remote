@@ -1,6 +1,6 @@
 use serde::{Deserialize,Serialize};
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize,Deserialize,Debug)]
 pub struct MoveItem
 {
     pub name:String,
