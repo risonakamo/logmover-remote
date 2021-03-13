@@ -47,6 +47,14 @@ tempfile="3.2.0"
 # name="relocatetest2"
 # path="tests/relocation-test2.rs"
 
-[[bin]]
-name="logtest"
-path="tests/logging-test.rs"
+# [[bin]]
+# name="logtest"
+# path="tests/logging-test.rs"
+
+# [[bin]]
+# name="logtest2"
+# path="tests/test.rs"
+
+# [[bin]]
+# name="test2"
+# path="tests/test2.rs"
