@@ -1,0 +1,7 @@
+# must be named config.yaml and be located next to the exe.
+# all fields required
+
+target_dir: path to target dir where items are located
+dest_dir: path to dest dir where items will be moved to
+
+log_path: path to logfile to log, including the filename

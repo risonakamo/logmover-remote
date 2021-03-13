@@ -4,5 +4,7 @@ use serde::Deserialize;
 pub struct LogMoverConfig
 {
     pub target_dir:String,
-    pub dest_dir:String
+    pub dest_dir:String,
+
+    pub log_path:String
 }
