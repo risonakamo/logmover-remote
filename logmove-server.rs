@@ -7,6 +7,7 @@ use rocket_contrib::json;
 use colored::Colorize;
 
 use logmover_remote::relocation2::relocateMultiple;
+use logmover_remote::logging::logMoveItems;
 
 use logmover_remote::types::relocation_types::{RelocationResult,printRelocationResult};
 use logmover_remote::types::api_types::{LogMoveRequest,MoveItem};
@@ -30,6 +31,14 @@ fn logMove(request:Json<LogMoveRequest>)->JsonValue
     );
 
     printRelocationResult(&relocateResult);
+
+    if relocateResult.allSuccess
+    {
+        logMoveItems(
+            &logrequest.items,
+            r"C:\Users\ktkm\Desktop\logmover-remote\testzone\randomise3.log"
+        );
+    }
 
     return json!(relocateResult);
 }

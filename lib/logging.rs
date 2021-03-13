@@ -3,6 +3,25 @@ use std::io::{Write,copy};
 use std::io;
 use tempfile::NamedTempFile;
 
+use super::types::api_types::MoveItem;
+
+/// log move items to specified log file.
+pub fn logMoveItems(items:&Vec<MoveItem>,logfile:&str)
+{
+    let newEntries:String=items.into_iter()
+        .map(moveItemToLogEntry)
+        .collect::<Vec<String>>()
+        .join("\r\n");
+
+    prependFile(logfile,&newEntries).unwrap();
+}
+
+/// format move item into log entry string, with end line
+fn moveItemToLogEntry(item:&MoveItem)->String
+{
+    return format!("{} {}\r\n",item.time,item.name);
+}
+
 /// prepend to a specified file the string content.
 fn prependFile(filepath:&str,content:&str)->io::Result<()>
 {
