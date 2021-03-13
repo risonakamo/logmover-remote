@@ -11,12 +11,12 @@ pub fn logMoveItems(items:&Vec<MoveItem>,logfile:&str)
     let newEntries:String=items.into_iter()
         .map(moveItemToLogEntry)
         .collect::<Vec<String>>()
-        .join("\r\n");
+        .join("");
 
     prependFile(logfile,&newEntries).unwrap();
 }
 
-/// format move item into log entry string, with end line
+/// format move item into log entry string, WITH the new line
 fn moveItemToLogEntry(item:&MoveItem)->String
 {
     return format!("{} {}\r\n",item.time,item.name);

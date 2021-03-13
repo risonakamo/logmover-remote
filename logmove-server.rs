@@ -20,8 +20,8 @@ fn logMove(request:Json<LogMoveRequest>)->JsonValue
     println!("=> relocation request for {} items",
         logrequest.items.len().to_string().yellow());
 
-    let moveItems:Vec<String>=logrequest.items.into_iter().map(|x:MoveItem|->String {
-        return x.name;
+    let moveItems:Vec<String>=logrequest.items.iter().map(|x:&MoveItem|->String {
+        return x.name.clone();
     }).collect();
 
     let relocateResult:RelocationResult=relocateMultiple(
