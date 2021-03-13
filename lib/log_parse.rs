@@ -10,10 +10,16 @@ use super::types::api_types::MoveItem;
 /// from them.
 pub fn parseFromClipboard()->Result<Vec<MoveItem>,Box<dyn Error>>
 {
-    let clipText:String=get_clipboard_string()
-        .unwrap()
-        .trim()
-        .to_string();
+    let clipTextPreTrim:String=match get_clipboard_string() {
+        Ok(res)=>res,
+        Err(err)=>{
+            eprintln!("{}","get clipboard error".red());
+            eprintln!("{}",err);
+            return Err("get clipboard error".into());
+        }
+    };
+
+    let clipText:String=clipTextPreTrim.trim().to_string();
 
     let splitText=clipText.split("\n")
     .map(|x:&str|->String {
