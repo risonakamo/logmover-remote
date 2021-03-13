@@ -60,6 +60,6 @@ tempfile="3.2.0"
 # name="test2"
 # path="tests/test2.rs"
 
-[[bin]]
-name="configtest"
-path="tests/config-test.rs"
+# [[bin]]
+# name="configtest"
+# path="tests/config-test.rs"

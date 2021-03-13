@@ -1,19 +1,21 @@
 #![feature(proc_macro_hygiene,decl_macro)]
 #![allow(non_snake_case)]
 
-use rocket::post;
+use rocket::{post,State};
 use rocket_contrib::json::{Json,JsonValue};
 use rocket_contrib::json;
 use colored::Colorize;
 
 use logmover_remote::relocation2::relocateMultiple;
 use logmover_remote::logging::logMoveItems;
+use logmover_remote::configuration::getConfig;
 
 use logmover_remote::types::relocation_types::{RelocationResult,printRelocationResult};
 use logmover_remote::types::api_types::{LogMoveRequest,MoveItem};
+use logmover_remote::types::configuration_types::LogMoverConfig;
 
 #[post("/log-move",format="json",data="<request>")]
-fn logMove(request:Json<LogMoveRequest>)->JsonValue
+fn logMove(request:Json<LogMoveRequest>,config:State<LogMoverConfig>)->JsonValue
 {
     let logrequest:LogMoveRequest=request.into_inner();
 
@@ -25,8 +27,8 @@ fn logMove(request:Json<LogMoveRequest>)->JsonValue
     }).collect();
 
     let relocateResult:RelocationResult=relocateMultiple(
-        r"C:\Users\ktkm\Desktop\logmover-remote\testzone\vids",
-        r"C:\Users\ktkm\Desktop\logmover-remote\testzone\delete",
+        &config.target_dir,
+        &config.dest_dir,
         &moveItems
     );
 
@@ -36,7 +38,7 @@ fn logMove(request:Json<LogMoveRequest>)->JsonValue
     {
         logMoveItems(
             &logrequest.items,
-            r"C:\Users\ktkm\Desktop\logmover-remote\testzone\randomise3.log"
+            &config.log_path
         );
     }
 
@@ -45,5 +47,8 @@ fn logMove(request:Json<LogMoveRequest>)->JsonValue
 
 fn main()
 {
-    rocket::ignite().mount("/",rocket::routes![logMove]).launch();
+    rocket::ignite()
+        .manage(getConfig().unwrap())
+        .mount("/",rocket::routes![logMove])
+        .launch();
 }

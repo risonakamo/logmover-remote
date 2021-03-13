@@ -5,7 +5,7 @@ use std::error::Error;
 use super::types::configuration_types::LogMoverConfig;
 
 /// retrieve the config yaml from the current dir.
-fn getConfig()->Result<LogMoverConfig,Box<dyn Error>>
+pub fn getConfig()->Result<LogMoverConfig,Box<dyn Error>>
 {
     let file:File=File::open("config.yaml")?;
     let reader:BufReader<File>=BufReader::new(file);
