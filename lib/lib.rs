@@ -7,3 +7,4 @@ pub mod types;
 pub mod log_parse;
 pub mod relocation2;
 pub mod logging;
+pub mod configuration;
