@@ -12,8 +12,8 @@ mkdir release
 cp target/release/logmove-server.exe release
 cp target/release/logmove-client.exe release
 
-cp example-config.yaml release/config.yaml
-cp example-client-config.yaml release/client-config.yaml
+cp example-config/example-config.yaml release/config.yaml
+cp example-config/example-client-config.yaml release/client-config.yaml
 cp Rocket.toml release
 cp run-scripts/* release
 
