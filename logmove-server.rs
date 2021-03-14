@@ -5,6 +5,7 @@ use rocket::{post,State};
 use rocket_contrib::json::{Json,JsonValue};
 use rocket_contrib::json;
 use colored::Colorize;
+use yansi::Paint;
 
 use logmover_remote::relocation2::relocateMultiple;
 use logmover_remote::logging::logMoveItems;
@@ -47,6 +48,7 @@ fn logMove(request:Json<LogMoveRequest>,config:State<LogMoverConfig>)->JsonValue
 
 fn main()
 {
+    Paint::enable_windows_ascii();
     rocket::ignite()
         .manage(getConfig().unwrap())
         .mount("/",rocket::routes![logMove])

@@ -2,6 +2,7 @@
 #![allow(unused_variables)]
 
 use reqwest::Client;
+use yansi::Paint;
 
 use logmover_remote::{
     types::api_types::{LogMoveRequest},
@@ -12,6 +13,8 @@ use logmover_remote::{
 #[tokio::main]
 async fn main()
 {
+    Paint::enable_windows_ascii();
+
     let items=match parseFromClipboard() {
         Err(err)=>std::process::exit(0),
         Ok(res)=>res
