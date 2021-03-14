@@ -8,3 +8,10 @@ pub struct LogMoverConfig
 
     pub log_path:String
 }
+
+#[derive(Debug,Deserialize)]
+pub struct LogMoverClientConfig
+{
+    pub hostname:String,
+    pub port:String
+}

@@ -1,0 +1,4 @@
+# must be named client-config.yaml
+
+hostname: localhost
+port: 4200
