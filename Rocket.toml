@@ -1,2 +1,5 @@
 [development]
 port=4200
+
+[production]
+port=4200
