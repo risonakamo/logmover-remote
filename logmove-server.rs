@@ -4,6 +4,7 @@
 use rocket::{post,State};
 use rocket_contrib::json::{Json,JsonValue};
 use rocket_contrib::json;
+use rocket_contrib::serve::StaticFiles;
 use colored::Colorize;
 use yansi::Paint;
 
@@ -52,5 +53,7 @@ fn main()
     rocket::ignite()
         .manage(getConfig().unwrap())
         .mount("/",rocket::routes![logMove])
+        .mount("/remote-rename",StaticFiles::from("remote-rename-web/web"))
+        .mount("/build",StaticFiles::from("remote-rename-web/build"))
         .launch();
 }
