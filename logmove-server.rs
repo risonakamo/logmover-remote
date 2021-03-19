@@ -55,5 +55,6 @@ fn main()
         .mount("/",rocket::routes![logMove])
         .mount("/remote-rename",StaticFiles::from("remote-rename-web/web"))
         .mount("/build",StaticFiles::from("remote-rename-web/build"))
+        .mount("/assets",StaticFiles::from("remote-rename-web/assets"))
         .launch();
 }
