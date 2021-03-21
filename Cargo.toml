@@ -34,6 +34,9 @@ sublime_fuzzy="0.7.0"
 
 # TESTING
 [[bin]]
+name="searchtest"
+path="tests/search-test.rs"
+
 name="fuzzytest"
 path="tests/fuzzy-test.rs"
 

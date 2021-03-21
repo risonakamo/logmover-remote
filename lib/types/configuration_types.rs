@@ -1,3 +1,5 @@
+// types used by config file
+
 use serde::Deserialize;
 
 #[derive(Debug,Deserialize)]
