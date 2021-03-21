@@ -19,8 +19,8 @@ fn main()
     scoring.bonus_consecutive=100000;
 
     let result=FuzzySearch::new(
-        "[SubsPlease] Uma Musume - Pretty Derby S2 - 08 (1080p) [5752663E].mkv",
-        "[Erai-raws] Uma Musume - Pretty Derby Season 2 - 09 [1080p][Multiple Subtitle].mkv"
+        "uma",
+        "[SubsPlease] Uma Musume - Pretty Derby S2 - 08 (1080p) [5752663E].mkv"
     )
     .score_with(&scoring)
     .case_insensitive()
