@@ -2,6 +2,8 @@ use std::fs::{read_dir,ReadDir,DirEntry};
 use sublime_fuzzy::{FuzzySearch,Scoring,Match};
 use lazy_static::lazy_static;
 use std::io;
+use regex::{Regex};
+use std::borrow::Cow;
 
 use super::types::search_types::SearchItem;
 
@@ -21,9 +23,12 @@ fn searchDir(targetDir:&str,query:&str)->Vec<SearchItem>
         return None;
     }).collect();
 
-    println!("{:#?}",matchedFiles);
-
-    return vec![];
+    return matchedFiles.iter().map(|x:&String|->SearchItem {
+        return SearchItem {
+            name:x.clone(),
+            shortname:simplifyName(&x)
+        };
+    }).collect();
 }
 
 /// determine if input matches query
@@ -54,15 +59,32 @@ fn fuzzyMatch(input:&str,query:&str)->bool
     }
 }
 
+/// perform custom name simplification
+fn simplifyName(filename:&str)->String
+{
+    lazy_static!
+    {
+        static ref replacer1:Regex=Regex::new(r"[\[\(].*?[\]\)]|\.mkv|\.mp4|END|end").unwrap();
+        static ref replacer2:Regex=Regex::new(r"[^\w]|\d").unwrap();
+    }
+
+    let afterReplacer1:Cow<str>=replacer1.replace_all(filename,"");
+    let res:Cow<str>=replacer2.replace_all(&afterReplacer1,"");
+
+    return res.to_lowercase();
+}
+
 pub mod test
 {
     use super::searchDir;
 
     pub fn dirsearchtest()
     {
-        searchDir(
+        let res=searchDir(
             r"C:\Users\ktkm\Desktop\videos\vids",
-            "Uma Musume"
+            "uma"
         );
+
+        println!("{:#?}",res);
     }
 }
