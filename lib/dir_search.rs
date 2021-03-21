@@ -8,14 +8,14 @@ use std::borrow::Cow;
 use super::types::search_types::SearchItem;
 
 /// fuzzy search a target dir for a query. return vector of results
-fn searchDir(targetDir:&str,query:&str)->Vec<SearchItem>
+pub fn searchDir(targetDir:&str,query:&str)->Vec<SearchItem>
 {
     let filenames:ReadDir=read_dir(targetDir).unwrap();
 
     let matchedFiles:Vec<String>=filenames.filter_map(|x:io::Result<DirEntry>|->Option<String> {
         let filename:String=x.unwrap().file_name().to_str().unwrap().to_string();
 
-        if fuzzyMatch(&filename,query,0)
+        if query.len()==0 || fuzzyMatch(&filename,query,0)
         {
             return Some(filename);
         }

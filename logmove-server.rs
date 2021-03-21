@@ -11,11 +11,13 @@ use yansi::Paint;
 use logmover_remote::relocation2::relocateMultiple;
 use logmover_remote::logging::logMoveItems;
 use logmover_remote::configuration::getConfig;
+use logmover_remote::dir_search::searchDir;
 
 use logmover_remote::types::relocation_types::{RelocationResult,printRelocationResult};
 use logmover_remote::types::api_types::{LogMoveRequest,MoveItem};
 use logmover_remote::types::configuration_types::LogMoverConfig;
 
+/// request log move api. body is log move request. returns the status of all items attempted to move
 #[post("/log-move",format="json",data="<request>")]
 fn logMove(request:Json<LogMoveRequest>,config:State<LogMoverConfig>)->JsonValue
 {
@@ -47,12 +49,20 @@ fn logMove(request:Json<LogMoveRequest>,config:State<LogMoverConfig>)->JsonValue
     return json!(relocateResult);
 }
 
+/// search for renameable items. post request where body is plain text string to search for.
+/// returns array of RenameItems matching the search
+#[post("/search-rename-items",format="text/plain",data="<query>")]
+fn searchRenameItems(query:String,config:State<LogMoverConfig>)->JsonValue
+{
+    return json!(searchDir(&config.target_dir,&query));
+}
+
 fn main()
 {
     Paint::enable_windows_ascii();
     rocket::ignite()
         .manage(getConfig().unwrap())
-        .mount("/",rocket::routes![logMove])
+        .mount("/",rocket::routes![logMove,searchRenameItems])
         .mount("/remote-rename",StaticFiles::from("remote-rename-web/web"))
         .mount("/build",StaticFiles::from("remote-rename-web/build"))
         .mount("/assets",StaticFiles::from("remote-rename-web/assets"))
