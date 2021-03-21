@@ -15,7 +15,7 @@ fn searchDir(targetDir:&str,query:&str)->Vec<SearchItem>
     let matchedFiles:Vec<String>=filenames.filter_map(|x:io::Result<DirEntry>|->Option<String> {
         let filename:String=x.unwrap().file_name().to_str().unwrap().to_string();
 
-        if fuzzyMatch(&filename,query)
+        if fuzzyMatch(&filename,query,0)
         {
             return Some(filename);
         }
@@ -32,7 +32,7 @@ fn searchDir(targetDir:&str,query:&str)->Vec<SearchItem>
 }
 
 /// determine if input matches query
-fn fuzzyMatch(input:&str,query:&str)->bool
+fn fuzzyMatch(input:&str,query:&str,scoreThreshold:isize)->bool
 {
     lazy_static!
     {
@@ -50,6 +50,11 @@ fn fuzzyMatch(input:&str,query:&str)->bool
     match result
     {
         Some(res)=>{
+            if res.score()<scoreThreshold
+            {
+                return false;
+            }
+
             return true;
         }
 
@@ -82,7 +87,7 @@ pub mod test
     {
         let res=searchDir(
             r"C:\Users\ktkm\Desktop\videos\vids",
-            "uma"
+            "uma musume"
         );
 
         println!("{:#?}",res);
