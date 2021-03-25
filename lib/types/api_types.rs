@@ -14,3 +14,10 @@ pub struct LogMoveRequest
 {
     pub items:Vec<MoveItem>
 }
+
+#[derive(Serialize,Deserialize,Debug)]
+pub struct SearchRenameItemsRequest
+{
+    pub query:String,
+    pub simplify:bool
+}

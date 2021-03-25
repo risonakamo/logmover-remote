@@ -14,7 +14,7 @@ use logmover_remote::configuration::getConfig;
 use logmover_remote::dir_search::searchDir;
 
 use logmover_remote::types::relocation_types::{RelocationResult,printRelocationResult};
-use logmover_remote::types::api_types::{LogMoveRequest,MoveItem};
+use logmover_remote::types::api_types::{LogMoveRequest,MoveItem,SearchRenameItemsRequest};
 use logmover_remote::types::configuration_types::LogMoverConfig;
 
 /// request log move api. body is log move request. returns the status of all items attempted to move
@@ -51,10 +51,16 @@ fn logMove(request:Json<LogMoveRequest>,config:State<LogMoverConfig>)->JsonValue
 
 /// search for renameable items. post request where body is plain text string to search for.
 /// returns array of RenameItems matching the search
-#[post("/search-rename-items",format="text/plain",data="<query>")]
-fn searchRenameItems(query:String,config:State<LogMoverConfig>)->JsonValue
+#[post("/search-rename-items",format="json",data="<request>")]
+fn searchRenameItems(request:Json<SearchRenameItemsRequest>,config:State<LogMoverConfig>)->JsonValue
 {
-    return json!(searchDir(&config.target_dir,&query,true));
+    let searchRequest:SearchRenameItemsRequest=request.into_inner();
+
+    return json!(searchDir(
+        &config.target_dir,
+        &searchRequest.query,
+        searchRequest.simplify
+    ));
 }
 
 fn main()
