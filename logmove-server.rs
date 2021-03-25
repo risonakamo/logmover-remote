@@ -54,7 +54,7 @@ fn logMove(request:Json<LogMoveRequest>,config:State<LogMoverConfig>)->JsonValue
 #[post("/search-rename-items",format="text/plain",data="<query>")]
 fn searchRenameItems(query:String,config:State<LogMoverConfig>)->JsonValue
 {
-    return json!(searchDir(&config.target_dir,&query));
+    return json!(searchDir(&config.target_dir,&query,true));
 }
 
 fn main()

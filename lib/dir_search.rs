@@ -8,14 +8,25 @@ use std::borrow::Cow;
 use super::types::search_types::SearchItem;
 
 /// fuzzy search a target dir for a query. return vector of results
-pub fn searchDir(targetDir:&str,query:&str)->Vec<SearchItem>
+pub fn searchDir(targetDir:&str,initialQuery:&str,convertShortname:bool)->Vec<SearchItem>
 {
+    let query:String;
+    if convertShortname
+    {
+        query=simplifyName(&initialQuery);
+    }
+
+    else
+    {
+        query=initialQuery.to_string();
+    }
+
     let filenames:ReadDir=read_dir(targetDir).unwrap();
 
     let matchedFiles:Vec<String>=filenames.filter_map(|x:io::Result<DirEntry>|->Option<String> {
         let filename:String=x.unwrap().file_name().to_str().unwrap().to_string();
 
-        if query.len()==0 || fuzzyMatch(&filename,query,0)
+        if query.len()==0 || fuzzyMatch(&filename,&query,0)
         {
             return Some(filename);
         }
@@ -87,7 +98,8 @@ pub mod test
     {
         let res=searchDir(
             r"C:\Users\ktkm\Desktop\videos\vids",
-            "uma musume"
+            "uma musume",
+            false
         );
 
         println!("{:#?}",res);
