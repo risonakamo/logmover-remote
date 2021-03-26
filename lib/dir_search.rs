@@ -26,7 +26,18 @@ pub fn searchDir(targetDir:&str,initialQuery:&str,convertShortname:bool)->Vec<Se
     let matchedFiles:Vec<String>=filenames.filter_map(|x:io::Result<DirEntry>|->Option<String> {
         let filename:String=x.unwrap().file_name().to_str().unwrap().to_string();
 
-        if query.len()==0 || fuzzyMatch(&filename,&query,-200)
+        let matchName:String;
+        if convertShortname
+        {
+            matchName=simplifyName(&filename);
+        }
+
+        else
+        {
+            matchName=filename.clone();
+        }
+
+        if query.len()==0 || fuzzyMatch(&matchName,&query,-200)
         {
             return Some(filename);
         }
