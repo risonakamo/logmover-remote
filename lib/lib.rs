@@ -9,3 +9,4 @@ pub mod relocation2;
 pub mod logging;
 pub mod configuration;
 pub mod dir_search;
+pub mod renaming;
