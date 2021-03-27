@@ -12,6 +12,7 @@ use logmover_remote::relocation2::relocateMultiple;
 use logmover_remote::logging::logMoveItems;
 use logmover_remote::configuration::getConfig;
 use logmover_remote::dir_search::searchDir;
+use logmover_remote::renaming::renameItem;
 
 use logmover_remote::types::relocation_types::{RelocationResult,printRelocationResult};
 use logmover_remote::types::api_types::{LogMoveRequest,MoveItem,SearchRenameItemsRequest,RenameRequest};
@@ -64,12 +65,18 @@ fn searchRenameItems(request:Json<SearchRenameItemsRequest>,config:State<LogMove
 }
 
 #[post("/rename-item",format="json",data="<request>")]
-fn renameItem(request:Json<RenameRequest>,__config:State<LogMoverConfig>)
+fn renameItemApi(request:Json<RenameRequest>,config:State<LogMoverConfig>)->JsonValue
 {
     let renameRequest:RenameRequest=request.into_inner();
 
     println!("rename request");
     println!("{:#?}",renameRequest);
+
+    return json!(renameItem(
+        &config.target_dir,
+        &renameRequest.target,
+        &renameRequest.newName
+    ));
 }
 
 fn main()
@@ -77,7 +84,7 @@ fn main()
     Paint::enable_windows_ascii();
     rocket::ignite()
         .manage(getConfig().unwrap())
-        .mount("/",rocket::routes![logMove,searchRenameItems])
+        .mount("/",rocket::routes![logMove,searchRenameItems,renameItemApi])
         .mount("/remote-rename",StaticFiles::from("remote-rename-web/web"))
         .mount("/build",StaticFiles::from("remote-rename-web/build"))
         .mount("/assets",StaticFiles::from("remote-rename-web/assets"))
