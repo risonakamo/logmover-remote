@@ -21,3 +21,10 @@ pub struct SearchRenameItemsRequest
     pub query:String,
     pub simplify:bool
 }
+
+#[derive(Serialize,Deserialize,Debug)]
+pub struct RenameRequest
+{
+    pub target:String,
+    pub newName:String
+}
