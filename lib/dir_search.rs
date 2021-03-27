@@ -4,6 +4,7 @@ use lazy_static::lazy_static;
 use std::io;
 use regex::{Regex};
 use std::borrow::Cow;
+use std::path::Path;
 
 use super::types::search_types::SearchItem;
 
@@ -21,11 +22,21 @@ pub fn searchDir(targetDir:&str,initialQuery:&str,convertShortname:bool)->Vec<Se
         query=initialQuery.to_string();
     }
 
+    // get all the files
     let filenames:ReadDir=read_dir(targetDir).unwrap();
 
+    // perform fuzzy matching on the files, discarding un-matched items
     let matchedFiles:Vec<String>=filenames.filter_map(|x:io::Result<DirEntry>|->Option<String> {
         let filename:String=x.unwrap().file_name().to_str().unwrap().to_string();
 
+        // if file is an excluded file type, skip immediately
+        if checkInvalidFileType(&filename)
+        {
+            return None;
+        }
+
+        // the file name to use for matching. either the shortname if shortname enabled
+        // or just the filename
         let matchName:String;
         if convertShortname
         {
@@ -45,6 +56,7 @@ pub fn searchDir(targetDir:&str,initialQuery:&str,convertShortname:bool)->Vec<Se
         return None;
     }).collect();
 
+    // convert items to search items and return
     return matchedFiles.iter().map(|x:&String|->SearchItem {
         return SearchItem {
             name:x.clone(),
@@ -99,6 +111,18 @@ fn simplifyName(filename:&str)->String
     let res:Cow<str>=replacer2.replace_all(&afterReplacer1,"");
 
     return res.to_lowercase();
+}
+
+/** return if the file has an extension we care about */
+fn checkInvalidFileType(filename:&str)->bool
+{
+    let extension:&str=match Path::new(filename).extension()
+    {
+        Some(res)=>res.to_str().unwrap(),
+        None=>""
+    };
+
+    return extension=="ini";
 }
 
 pub mod test
