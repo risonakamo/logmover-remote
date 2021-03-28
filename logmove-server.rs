@@ -1,7 +1,8 @@
 #![feature(proc_macro_hygiene,decl_macro)]
 #![allow(non_snake_case)]
 
-use rocket::{post,State};
+use rocket::{post,State,get};
+use rocket::response::Redirect;
 use rocket_contrib::json::{Json,JsonValue};
 use rocket_contrib::json;
 use rocket_contrib::serve::StaticFiles;
@@ -79,12 +80,18 @@ fn renameItemApi(request:Json<RenameRequest>,config:State<LogMoverConfig>)->Json
     ));
 }
 
+#[get("/")]
+fn renameRenameRedirect()->Redirect
+{
+    return Redirect::to("/remote-rename");
+}
+
 fn main()
 {
     Paint::enable_windows_ascii();
     rocket::ignite()
         .manage(getConfig().unwrap())
-        .mount("/",rocket::routes![logMove,searchRenameItems,renameItemApi])
+        .mount("/",rocket::routes![logMove,searchRenameItems,renameItemApi,renameRenameRedirect])
         .mount("/remote-rename",StaticFiles::from("remote-rename-web/web"))
         .mount("/build",StaticFiles::from("remote-rename-web/build"))
         .mount("/assets",StaticFiles::from("remote-rename-web/assets"))
