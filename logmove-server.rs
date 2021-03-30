@@ -70,8 +70,8 @@ fn renameItemApi(request:Json<RenameRequest>,config:State<LogMoverConfig>)->Json
 {
     let renameRequest:RenameRequest=request.into_inner();
 
-    println!("rename request");
-    println!("{:#?}",renameRequest);
+    println!("rename request:");
+    renameRequest.printRename();
 
     return json!(renameItem(
         &config.target_dir,
