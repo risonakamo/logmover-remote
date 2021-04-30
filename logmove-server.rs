@@ -9,7 +9,7 @@ use rocket_contrib::serve::StaticFiles;
 use colored::Colorize;
 use yansi::Paint;
 
-use logmover_remote::relocation2::relocateMultiple;
+use logmover_remote::relocation2::{relocateMultiple,cleanName};
 use logmover_remote::logging::logMoveItems;
 use logmover_remote::configuration::getConfig;
 use logmover_remote::dir_search::searchDir;
@@ -29,7 +29,7 @@ fn logMove(request:Json<LogMoveRequest>,config:State<LogMoverConfig>)->JsonValue
         logrequest.items.len().to_string().yellow());
 
     let moveItems:Vec<String>=logrequest.items.iter().map(|x:&MoveItem|->String {
-        return x.name.clone();
+        return cleanName(&x.name);
     }).collect();
 
     let relocateResult:RelocationResult=relocateMultiple(

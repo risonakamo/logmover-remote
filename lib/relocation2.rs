@@ -1,6 +1,8 @@
 use std::path::{Path,PathBuf};
 use std::fs::rename;
 use colored::Colorize;
+use lazy_static::lazy_static;
+use regex::{Regex};
 
 use super::types::relocation_types::{RelocationResult,RelocationItemResult};
 
@@ -37,6 +39,17 @@ pub fn relocateMultiple(targetDir:&str,destinationDir:&str,items:&Vec<String>)->
         allSuccess:relocateAllSuccess,
         itemResults:relocateResult
     };
+}
+
+/// clean a name so it is just the filename
+pub fn cleanName(name:&str)->String
+{
+    lazy_static!
+    {
+        static ref replacer:Regex=Regex::new(r"(.*?)\.(\S*)").unwrap();
+    }
+
+    return replacer.captures(name).unwrap().get(0).unwrap().as_str().to_string();
 }
 
 /// given a target dir and array of items, check if each item exists. returns a relocation

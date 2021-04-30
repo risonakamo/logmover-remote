@@ -6,7 +6,7 @@ use yansi::Paint;
 use std::process::exit;
 
 use logmover_remote::{
-    types::api_types::{LogMoveRequest},
+    types::api_types::{LogMoveRequest,MoveItem},
     types::relocation_types::{RelocationResult,printRelocationResult},
     types::configuration_types::LogMoverClientConfig,
     log_parse::parseFromClipboard,
@@ -27,7 +27,7 @@ async fn main()
         }
     };
 
-    let items=match parseFromClipboard() {
+    let items:Vec<MoveItem>=match parseFromClipboard() {
         Err(err)=>{
             eprintln!("{}",Paint::red("clipboard parse error"));
             exit(0);
