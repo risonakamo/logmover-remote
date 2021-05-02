@@ -1,7 +1,7 @@
 set -ex
 
 # -- configuration --
-VERSION=2.0.2
+VERSION=2.0.3
 # -- end config --
 
 cargo build --release
