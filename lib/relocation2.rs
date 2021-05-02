@@ -46,10 +46,12 @@ pub fn cleanName(name:&str)->String
 {
     lazy_static!
     {
-        static ref replacer:Regex=Regex::new(r"(.*?)\.(\S*)").unwrap();
+        static ref replacer:Regex=Regex::new(r"(.*)\.(\S*)").unwrap();
     }
 
-    return replacer.captures(name).unwrap().get(0).unwrap().as_str().to_string();
+    return replacer.captures(name).unwrap()
+        .get(0).unwrap()
+        .as_str().to_string();
 }
 
 /// given a target dir and array of items, check if each item exists. returns a relocation
